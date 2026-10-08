@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Node / Frontend
+email-writer-react/node_modules/
+email-writer-react/dist/
+email-writer-react/.env.local

@@ -1,7 +1,7 @@
-package com.email.writer.app;
+package com.email.writer.service;
 
+import com.email.writer.dto.EmailRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import tools.jackson.databind.JsonNode;
@@ -13,6 +13,7 @@ import java.util.Map;
 public class EmailGeneratorService {
 
     private final WebClient webClient;
+
     public EmailGeneratorService() {
         this.webClient = WebClient.builder().build();
     }
@@ -24,7 +25,6 @@ public class EmailGeneratorService {
     private String geminiApiKey;
 
     public String generateEmailReply(EmailRequest emailRequest) {
-
         String prompt = buildPrompt(emailRequest);
 
         Map<String, Object> requestBody = Map.of(
@@ -68,7 +68,6 @@ public class EmailGeneratorService {
     }
 
     private String buildPrompt(EmailRequest emailRequest) {
-
         StringBuilder prompt = new StringBuilder();
 
         prompt.append(
@@ -76,9 +75,7 @@ public class EmailGeneratorService {
                         + "Do not create a subject line."
         );
 
-        if (emailRequest.getTone() != null
-                && !emailRequest.getTone().isEmpty()) {
-
+        if (emailRequest.getTone() != null && !emailRequest.getTone().isEmpty()) {
             prompt.append(" Use a ")
                     .append(emailRequest.getTone())
                     .append(" tone.");
@@ -90,3 +87,4 @@ public class EmailGeneratorService {
         return prompt.toString();
     }
 }
+

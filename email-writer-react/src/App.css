@@ -1,0 +1,10 @@
+/* App styling */
+.app-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
