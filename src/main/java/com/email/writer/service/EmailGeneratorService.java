@@ -37,15 +37,21 @@ public class EmailGeneratorService {
                 }
         );
 
-        String response = webClient.post()
-                .uri(geminiApiURL + "?key=" + geminiApiKey)
-                .header("Content-Type", "application/json")
-                .bodyValue(requestBody)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        try {
+            String response = webClient.post()
+                    .uri(geminiApiURL + "?key=" + geminiApiKey)
+                    .header("Content-Type", "application/json")
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
 
-        return extractResponseContent(response);
+            return extractResponseContent(response);
+        } catch (org.springframework.web.reactive.function.client.WebClientResponseException e) {
+            return "Gemini API Error (" + e.getStatusCode() + "): " + e.getResponseBodyAsString();
+        } catch (Exception e) {
+            return "Server Error: " + e.getMessage();
+        }
     }
 
     private String extractResponseContent(String response) {
