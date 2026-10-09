@@ -37,21 +37,45 @@ public class EmailGeneratorService {
                 }
         );
 
-        try {
-            String response = webClient.post()
-                    .uri(geminiApiURL + "?key=" + geminiApiKey)
-                    .header("Content-Type", "application/json")
-                    .bodyValue(requestBody)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
+        String[] candidateModels = new String[]{
+                "gemini-flash-latest",
+                "gemini-3.5-flash",
+                "gemini-3.1-flash-lite",
+                "gemini-2.5-pro"
+        };
 
-            return extractResponseContent(response);
-        } catch (org.springframework.web.reactive.function.client.WebClientResponseException e) {
-            return "Gemini API Error (" + e.getStatusCode() + "): " + e.getResponseBodyAsString();
-        } catch (Exception e) {
-            return "Server Error: " + e.getMessage();
+        String lastError = null;
+
+        for (String modelName : candidateModels) {
+            try {
+                String targetUrl = "https://generativelanguage.googleapis.com/v1beta/models/"
+                        + modelName + ":generateContent?key=" + geminiApiKey;
+
+                String response = webClient.post()
+                        .uri(targetUrl)
+                        .header("Content-Type", "application/json")
+                        .bodyValue(requestBody)
+                        .retrieve()
+                        .bodyToMono(String.class)
+                        .block();
+
+                String extracted = extractResponseContent(response);
+                if (extracted != null && !extracted.startsWith("Error Processing Request")) {
+                    return extracted;
+                }
+            } catch (org.springframework.web.reactive.function.client.WebClientResponseException e) {
+                lastError = "Gemini API Error (" + e.getStatusCode() + "): " + e.getResponseBodyAsString();
+                // If model is overloaded (503/429) or not found (404), continue to next fallback model
+                if (e.getStatusCode().value() == 503 || e.getStatusCode().value() == 429 || e.getStatusCode().value() == 404) {
+                    continue;
+                }
+                return lastError;
+            } catch (Exception e) {
+                lastError = "Server Error: " + e.getMessage();
+            }
         }
+
+        return lastError != null ? lastError : "Unable to generate reply at this time. Please try again.";
     }
 
     private String extractResponseContent(String response) {
