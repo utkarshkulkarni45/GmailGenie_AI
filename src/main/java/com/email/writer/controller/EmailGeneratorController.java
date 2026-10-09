@@ -14,6 +14,11 @@ public class EmailGeneratorController {
 
     private final EmailGeneratorService emailGeneratorService;
 
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("GmailGenie AI Backend is running smoothly 🚀");
+    }
+
     @PostMapping("/generate")
     public ResponseEntity<String> generateEmail(@RequestBody EmailRequest emailRequest) {
         String response = emailGeneratorService.generateEmailReply(emailRequest);
