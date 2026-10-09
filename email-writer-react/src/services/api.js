@@ -1,4 +1,5 @@
-const API_BASE_URL = "http://localhost:8080/api/email";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "https://gmailgenie-ai.onrender.com/api/email";
 
 export const generateEmailReply = async (emailContent, tone) => {
   const response = await fetch(`${API_BASE_URL}/generate`, {

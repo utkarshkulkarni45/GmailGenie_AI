@@ -77,8 +77,8 @@ function injectButton() {
         throw new Error("No email content found");
       }
 
-      // Call Spring Boot backend
-      const response = await fetch("http://localhost:8080/api/email/generate", {
+      // Call Spring Boot backend (Live Render Deployment)
+      const response = await fetch("https://gmailgenie-ai.onrender.com/api/email/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
