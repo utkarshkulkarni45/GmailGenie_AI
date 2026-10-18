@@ -1,156 +1,162 @@
 # 🧞‍♂️ GmailGenie AI
 
 <p align="center">
-  <b>Instant, context-aware AI email response generator powered by Google Gemini, Spring Boot, and React.</b>
+  <b>Production-ready, context-aware AI email response system powered by Google Gemini, Spring Boot 4, React 19, and a native Chrome Extension for Gmail.</b>
 </p>
 
 <p align="center">
+  <a href="https://gmailgenie-ai.onrender.com/"><img src="https://img.shields.io/badge/Render-Backend%20Live-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Render Backend" /></a>
   <img src="https://img.shields.io/badge/Spring_Boot-4.1.1-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot" />
+  <img src="https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 21" />
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
   <img src="https://img.shields.io/badge/Vite-8.3-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/Google_Gemini-AI-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini" />
-  <img src="https://img.shields.io/badge/Material_UI-5-007FFF?style=for-the-badge&logo=mui&logoColor=white" alt="MUI" />
+  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Google_Gemini-API-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini" />
+  <img src="https://img.shields.io/badge/Chrome_Extension-Manifest_V3-FFCC00?style=for-the-badge&logo=googlechrome&logoColor=black" alt="Chrome Extension" />
 </p>
 
 ---
 
-## 🌟 Highlights & Features
+## 📌 Executive Summary
 
-- ⚡ **Instant Email Reply Generation**: Paste incoming emails and receive articulate replies in seconds.
-- 🎯 **Tone Customization**: Tailor responses by mood:
+**GmailGenie AI** solves the daily friction of email overload by generating contextual, articulate email responses in seconds. Built with a full-stack distributed architecture, it offers two access interfaces:
+1. **Direct Chrome Extension** seamlessly embedded in the official Gmail compose/reply interface.
+2. **Web Dashboard** for quick standalone generation and tone fine-tuning.
+
+The backend features an **automated multi-model failover mechanism** ensuring high availability even during Google Cloud API demand spikes.
+
+---
+
+## 🌟 Key Features
+
+- ⚡ **Native Gmail Integration**: Injects a custom `Genie AI ⭐` action button into Gmail compose & reply toolbars using a Manifest V3 Content Script and DOM MutationObserver.
+- 🧠 **Context-Aware Thread Parsing**: Intelligently inspects the incoming email thread, cleans quotes/signatures, and constructs optimal generative prompts.
+- 🎯 **Tone Customization**: Tailor responses by style:
   - 💼 *Professional*
   - 😊 *Friendly*
   - ☕ *Casual*
   - 🎯 *Persuasive*
   - ⚡ *Urgent & Direct*
-- 📋 **One-Click Clipboard**: Copy the generated reply straight to your clipboard with instant feedback.
-- 🎨 **Modern Minimalist UI**: Clean slate & indigo theme built on Material-UI.
-- 🛡️ **Robust Architecture**: Layered Spring Boot backend (`controller`, `service`, `dto`) integrating with Google's Gemini API via reactive WebClient.
+- 🛡️ **Fault-Tolerant AI Engine**: Dynamically routes requests across fallback Gemini models (`gemini-flash-latest`, `gemini-3.5-flash`, `gemini-3.1-flash-lite`, `gemini-2.5-pro`) upon HTTP 503/429 spikes.
+- 🐳 **Containerized & Cloud-Deployed**: Packaged via multi-stage Docker builds running on Render with dynamic port binding and zero-downtime execution.
 
 ---
 
-## 🏗️ Project Architecture
+## 🏗️ System Architecture
 
 ```
-email-writer-sb/
-├── email-writer-react/          # Frontend (React 19 + Vite + Material UI)
+GmailGenie_AI/
+├── email-writer-extension/        # Chrome Extension (Manifest V3)
+│   ├── manifest.json              # Extension metadata & Gmail host permissions
+│   ├── content.js                 # DOM Observer & Gmail toolbar injection
+│   └── content.css                # Polished UI injection styling
+│
+├── email-writer-react/            # Frontend Web Dashboard (React 19 + Vite)
 │   ├── src/
-│   │   ├── components/
+│   │   ├── components/            # Atomic UI components
 │   │   │   ├── EmailInputForm.jsx
 │   │   │   └── ReplyViewer.jsx
-│   │   ├── services/
-│   │   │   └── api.js
-│   │   ├── App.jsx
-│   │   └── main.jsx
+│   │   ├── services/api.js        # Centralized HTTP client
+│   │   ├── App.jsx                # Theme and state coordinator
+│   │   └── index.css              # Modern slate-indigo styling
 │   └── package.json
 │
-├── src/main/java/com/email/writer/ # Backend (Spring Boot 4)
-│   ├── controller/
-│   │   └── EmailGeneratorController.java
-│   ├── service/
+├── src/main/java/com/email/writer/ # Backend Microservice (Spring Boot 4)
+│   ├── controller/                # REST Controller & CORS configuration
+│   │   ├── EmailGeneratorController.java
+│   │   └── HomeController.java
+│   ├── service/                   # Business logic & reactive WebClient failover
 │   │   └── EmailGeneratorService.java
-│   ├── dto/
+│   ├── dto/                       # Request/Response data transfer objects
 │   │   └── EmailRequest.java
 │   └── EmailWriterSbApplication.java
 │
-├── pom.xml
+├── Dockerfile                     # Multi-stage production container build
+├── pom.xml                        # Maven dependencies & build lifecycle
 └── README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Live Demo & Deployment
+
+- **API Live Health Check**: [https://gmailgenie-ai.onrender.com/](https://gmailgenie-ai.onrender.com/)
+- **Repository**: [https://github.com/utkarshkulkarni45/GmailGenie_AI](https://github.com/utkarshkulkarni45/GmailGenie_AI)
+
+---
+
+## 💻 Local Development Setup
 
 ### Prerequisites
-
 - **Java 21+** (or Java 25)
 - **Node.js 18+** & npm
-- A **Google Gemini API Key** ([Get one from Google AI Studio](https://aistudio.google.com/))
+- A **Google Gemini API Key** ([Google AI Studio](https://aistudio.google.com/))
+
+### 1. Spring Boot Backend Setup
+```bash
+# Clone the repository
+git clone https://github.com/utkarshkulkarni45/GmailGenie_AI.git
+cd GmailGenie_AI
+
+# Set environment variables
+# PowerShell:
+$env:GEMINI_KEY = "your_api_key_here"
+# CMD:
+set GEMINI_KEY=your_api_key_here
+# Bash / Linux / macOS:
+export GEMINI_KEY="your_api_key_here"
+
+# Start the application
+./mvnw spring-boot:run
+```
+Backend will be active on `http://localhost:8080`.
+
+### 2. React Frontend Setup
+```bash
+cd email-writer-react
+npm install
+npm run dev
+```
+Access the dashboard at `http://localhost:5173`.
+
+### 3. Load Chrome Extension in Gmail
+1. Open Google Chrome and visit `chrome://extensions/`.
+2. Toggle **Developer mode** (top-right) to **ON**.
+3. Click **Load unpacked** (top-left) and select the `email-writer-extension` folder.
+4. Navigate to [Gmail](https://mail.google.com), open any email, click **Reply**, and click **Genie AI ⭐**!
 
 ---
 
-### 1. Backend Setup (Spring Boot)
-
-1. Open your terminal at the root directory:
-   ```bash
-   cd email-writer-sb
-   ```
-
-2. Set your Gemini API credentials:
-
-   **PowerShell:**
-   ```powershell
-   $env:GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
-   $env:GEMINI_KEY = "your_gemini_api_key"
-   ```
-
-   **Command Prompt (CMD):**
-   ```cmd
-   set GEMINI_URL=https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent
-   set GEMINI_KEY=your_gemini_api_key
-   ```
-
-   **Bash / macOS / Linux:**
-   ```bash
-   export GEMINI_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
-   export GEMINI_KEY="your_gemini_api_key"
-   ```
-
-3. Launch the Spring Boot server:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-   *(Windows CMD / PowerShell: `.\mvnw.cmd spring-boot:run`)*
-
-   The backend will be live on `http://localhost:8080`.
-
----
-
-### 2. Frontend Setup (React + Vite)
-
-1. Open a second terminal and navigate to the frontend directory:
-   ```bash
-   cd email-writer-react
-   ```
-
-2. Install dependencies (if first time):
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-4. Open `http://localhost:5173` in your browser.
-
----
-
-## 🔌 API Reference
+## 🔌 REST API Specification
 
 ### `POST /api/email/generate`
 
-#### Request Body
+#### Request Payload
 ```json
 {
-  "emailContent": "Hi, are we still meeting today at 3 PM?",
+  "emailContent": "Hi Utkarsh, can we review the presentation slides today at 4 PM?",
   "tone": "professional"
 }
 ```
 
-#### Response
+#### Response (`200 OK`)
 ```text
 Hi,
 
-Yes, we are still on schedule for our meeting today at 3:00 PM. Looking forward to speaking with you.
+Thank you for reaching out. Yes, 4:00 PM works well for me to review the presentation slides. 
+
+Looking forward to our discussion.
 
 Best regards,
+Utkarsh Kulkarni
 ```
 
 ---
 
-<p align="center">
-  <b>Made by UK ⭐</b>
-</p>
+## 👨‍💻 Author & Engineering Insights
 
+**Built & Maintained by Utkarsh Kulkarni**  
+⭐ **Made by UK**
+
+- **GitHub**: [@utkarshkulkarni45](https://github.com/utkarshkulkarni45)
+- **Specializations**: Full-Stack Development (Java, Spring Boot, React), Cloud Containers (Docker), Chrome Extensions, Generative AI Integration.
